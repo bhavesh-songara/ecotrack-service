@@ -2,11 +2,11 @@
   "name": "ecotrack-service",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "nodemon -r dotenv/config  src/index.ts",
     "build": "tsc",
-    "start": "node -r dotenv/config dist/index.js"
+    "start": "node -r dotenv/config dist/src/index.js"
   },
   "repository": {
     "type": "git",
