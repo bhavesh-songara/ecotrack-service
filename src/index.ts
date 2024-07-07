@@ -1,9 +1,12 @@
-import { app } from "./app";
+import app from "./app";
 import config from "../config";
 import { logger } from "./utils/logger";
+import { MongoDBConnector } from "./connectors/mongodb";
 
 async function bootstrap() {
   try {
+    await MongoDBConnector.connect();
+
     const { servicePort } = config;
 
     app.listen(servicePort, () => {

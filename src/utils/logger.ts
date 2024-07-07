@@ -125,7 +125,7 @@ export const contextMiddleware = (
 
       clsNamespace.set("requestContext", requestContext);
     } catch (err) {
-      console.error(`Error in contextMiddleware: ${err}`);
+      logger.error(`Error in contextMiddleware: ${err}`);
     } finally {
       next();
     }

@@ -25,6 +25,7 @@
     "cls-hooked": "^4.2.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-async-handler": "^1.2.0",
     "mongoose": "^8.4.5",
     "uuid": "^10.0.0",
     "winston": "^3.13.0",

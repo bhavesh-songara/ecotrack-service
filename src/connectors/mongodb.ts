@@ -1,26 +1,41 @@
 import mongoose from "mongoose";
+
 import { logger } from "../utils/logger";
 
-export const connect = async () => {
-  const host = process.env.MONGODB_HOST;
-  const username = process.env.MONGODB_USERNAME;
-  const password = process.env.MONGODB_PASSWORD;
+export class MongoDBConnector {
+  private static host = process.env.MONGODB_HOST as string;
+  private static username = process.env.MONGODB_USERNAME as string;
+  private static password = process.env.MONGODB_PASSWORD as string;
 
-  if (!username || !password) {
-    throw new Error("Username and password not provided");
+  private static validate() {
+    if (!this.host) {
+      throw new Error("MongoDB host not provided");
+    }
+
+    if (!this.username || !this.password) {
+      throw new Error("Username and password not provided");
+    }
   }
 
-  const mongoUrl = `mongodb+srv://${username}:${password}@${host}`;
+  private static getMongoUrl() {
+    return `mongodb+srv://${this.username}:${this.password}@${this.host}`;
+  }
 
-  logger.info(`Connecting to MongoDB: ${host}`);
+  static async connect() {
+    this.validate();
 
-  await mongoose.connect(mongoUrl, {
-    readPreference: "primary",
-    connectTimeoutMS: 30000,
-    socketTimeoutMS: 20000,
-  });
+    const mongoUrl = this.getMongoUrl();
 
-  logger.info(`Connected to MongoDB: ${host}`);
-};
+    logger.info(`Connecting to MongoDB: ${this.host}`);
+
+    await mongoose.connect(mongoUrl, {
+      readPreference: "primary",
+      connectTimeoutMS: 30000,
+      socketTimeoutMS: 20000,
+    });
+
+    logger.info(`Connected to MongoDB: ${this.host}`);
+  }
+}
 
 export const ecotrackDb = mongoose.connection.useDb("ecotrack");
