@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { testApis } from "./testRoutes";
 import { HealthCheckController } from "../controllers/healthCheckController";
+import { productRoutes } from "./productRoutes";
 
 export const apis = Router();
 
@@ -11,4 +12,5 @@ apis.get("/healthCheck", HealthCheckController.healthCheck);
 // Test endpoint
 apis.use("/test", testApis);
 
-// Add more routes here
+// Other endpoints
+apis.use("/product", productRoutes);

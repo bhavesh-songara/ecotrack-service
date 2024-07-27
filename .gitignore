@@ -42,3 +42,6 @@ yarn.lock
 
 # Ignore npm lock file
 package-lock.json
+
+# Google Application Credentials
+config/google-application-credentials.json

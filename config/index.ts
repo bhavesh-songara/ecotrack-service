@@ -7,6 +7,10 @@ interface EnvironmentConfig {}
 
 interface CommonConfig {
   servicePort: number;
+  googleCloud: {
+    projectId: string;
+    location: string;
+  };
 }
 
 let environmentConfig: EnvironmentConfig;

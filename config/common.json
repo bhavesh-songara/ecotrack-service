@@ -1,3 +1,7 @@
 {
-  "servicePort": 8080
+  "servicePort": 8080,
+  "googleCloud": {
+    "projectId": "newtral-dev",
+    "location": "us-central1"
+  }
 }
