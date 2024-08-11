@@ -19,4 +19,19 @@ export class ProductController {
 
     res.send(data);
   }
+
+  static async getProductAnalysisV2(req: Request, res: Response) {
+    const { imageSrc } = req.query as { imageSrc: string };
+
+    validateJoiSchema({
+      schema: Joi.object({
+        imageSrc: Joi.string().required(),
+      }),
+      data: { imageSrc },
+    });
+
+    const data = await ProductService.getProductAnalysisV2({ imageSrc });
+
+    res.send(data);
+  }
 }

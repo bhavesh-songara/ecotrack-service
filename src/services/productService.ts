@@ -1,5 +1,3 @@
-import fs from "fs";
-
 import { PromptHelper } from "../helpers/PromptHelper";
 import { VertextAIHelper } from "../helpers/VertexAIHelper";
 import fetcher from "../utils/fetcher";
@@ -8,9 +6,7 @@ import createHttpError from "http-errors";
 import { CommonUtils } from "../utils/common";
 
 export class ProductService {
-  static async getProductAnalysis(payload: { imageSrc: string }) {
-    const { imageSrc } = payload;
-
+  private static async getBase64Image(imageSrc: string) {
     const isBase64 = imageSrc.startsWith("data:image");
 
     let base64Image = "";
@@ -33,6 +29,14 @@ export class ProductService {
       mimeType = headers?.["content-type"];
     }
 
+    return { base64Image, mimeType };
+  }
+
+  static async getProductAnalysis(payload: { imageSrc: string }) {
+    const { imageSrc } = payload;
+
+    const { base64Image, mimeType } = await this.getBase64Image(imageSrc);
+
     const prompt = PromptHelper.getProductAnalysisPrompt();
 
     const { jsonResponse } = await VertextAIHelper.getJSONResponse({
@@ -46,7 +50,7 @@ export class ProductService {
             {
               inlineData: {
                 data: base64Image,
-                mimeType: "image/jpeg",
+                mimeType,
               },
             },
           ],
@@ -55,5 +59,63 @@ export class ProductService {
     });
 
     return { data: jsonResponse };
+  }
+
+  static async getProductAnalysisV2(payload: { imageSrc: string }) {
+    const { imageSrc } = payload;
+
+    const { base64Image, mimeType } = await this.getBase64Image(imageSrc);
+
+    const productInformationExtractionPrompt =
+      await PromptHelper.getProductInformationExtractionPrompt({});
+
+    const productInfoExtractionResult = await VertextAIHelper.getJSONResponse({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: productInformationExtractionPrompt,
+            },
+            {
+              inlineData: {
+                data: base64Image,
+                mimeType,
+              },
+            },
+          ],
+        },
+      ],
+    });
+
+    const product = productInfoExtractionResult?.jsonResponse;
+
+    if (!product) {
+      throw new createHttpError.BadRequest("Invalid Product");
+    }
+
+    const productSustainabilityMetricPrompt =
+      await PromptHelper.getProductSustainabilityMetricsAndInsightsPrompt({
+        product,
+        version: "2",
+      });
+
+    const sustainabilityMetricResult = await VertextAIHelper.getJSONResponse({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: productSustainabilityMetricPrompt,
+            },
+          ],
+        },
+      ],
+    });
+
+    return {
+      product,
+      ...(sustainabilityMetricResult?.jsonResponse || {}),
+    };
   }
 }

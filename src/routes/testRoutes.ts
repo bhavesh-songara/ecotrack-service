@@ -6,6 +6,6 @@ export const testApis = Router();
 testApis.get(
   "/",
   asyncFunction(async (req, res) => {
-    res.send("Hello World!");
+    res.send("Hello from test route");
   })
 );

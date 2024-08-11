@@ -8,3 +8,8 @@ productRoutes.get(
   "/analysis",
   asyncFunction(ProductController.getProductAnalysis)
 );
+
+productRoutes.get(
+  "/analysis/v2",
+  asyncFunction(ProductController.getProductAnalysisV2)
+);
