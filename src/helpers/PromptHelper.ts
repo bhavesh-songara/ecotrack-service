@@ -389,10 +389,19 @@ ecoScore: A numeric value representing the sustainability score of the product (
     description:
       Explanation of the carbon footprint and its significance,
   },
-  reportUrl: Url of the sustainability report for the product from below products shared if product matches with any of the below products give according to product reference,
+  reportUrl: Url of the sustainability report for the product from below products shared if product matches with any of the below products give according to product reference should be from the shared same subcategory products return null if not available,
+  quantitativePoints: [
+      {
+        icon: a unicode icon representing the quantitative point e.g. "📊" if icon is not available, you can skip this field.,
+        title: value of the quantitative point with unit if required, 
+        description: a brief description of the quantitative point.,
+      },
+      ....
+      In quantitative points, you can include data like energy efficiency, water usage, recyclable content, etc.
+  ],
   recyclingOptions: [
     {
-      icon:  a unicode icon representing the recycling option e.g. "♻️",
+      icon:  a unicode icon representing the recycling option e.g. "♻️" if icon is not available, you can skip this field.,
       title: a brief title of the recycling option,
       description:
         a brief description of the recycling option.,
@@ -401,7 +410,8 @@ ecoScore: A numeric value representing the sustainability score of the product (
   ],
   sustainabilityTips: [
     {
-      icon: a unicode icon representing the sustainability tip e.g. "🌱",
+      icon: a unicode icon representing the sustainability tip e.g. "🌱"  if icon is not available, you can skip this field.
+      ,
       title: a brief title of the sustainability tip for the user,
       description:
         a brief description of the sustainability tip for the user.,
@@ -410,7 +420,7 @@ ecoScore: A numeric value representing the sustainability score of the product (
   ],
   initiativesByBrand: [
     {
-      icon: a unicode icon representing the initiative e.g. "🌍",
+      icon: a unicode icon representing the initiative e.g. "🌍" if icon is not available, you can skip this field.,
       title: a brief title of the initiative by the brand,
       description:
         a brief description of the initiative by the brand.,
